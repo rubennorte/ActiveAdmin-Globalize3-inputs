@@ -4,10 +4,12 @@ module ActiveAdmin
       builder_method :globalize_attributes_table_for
 
       def row(attr, &block)
-        I18n.available_locales.each do |locale|
+        I18n.available_locales.each_with_index do |locale, index|
           @table << tr do
-            th do
-              "#{ I18n.t("translation.#{ locale }") } #{ header_content_for(attr) }"
+            if index == 0
+              th :rowspan => I18n.available_locales.length do
+                header_content_for(attr)
+              end
             end
             td do
               I18n.with_locale locale do
