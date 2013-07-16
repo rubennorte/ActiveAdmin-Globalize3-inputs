@@ -3,11 +3,12 @@ module ActiveAdmin
     class GlobalizeAttributesTable < ActiveAdmin::Views::AttributesTable
       builder_method :globalize_attributes_table_for
 
-      def row(attr, &block)
-        I18n.available_locales.each_with_index do |locale, index|
+      def row(attr, options={}, &block)
+        available_locales = options[:available_locales] || I18n.available_locales
+        available_locales.each_with_index do |locale, index|
           @table << tr do
             if index == 0
-              th :rowspan => I18n.available_locales.length do
+              th :rowspan => available_locales.length do
                 header_content_for(attr)
               end
             end
